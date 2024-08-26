@@ -1,24 +1,28 @@
 function add(a, b) {
-    console.log(a + b);
     return a + b;
 } 
 
 function subtract(a, b) {
-    console.log(a - b);
     return a - b;
 }
 
 function multiply(a, b) {
-    console.log(a * b);
     return a * b;
 }
 
 function divide(a, b) {
-    console.log(a / b);
     return a / b;
 }
 
-add(5, 3);
-subtract(5, 3);
-multiply(5, 3);
-divide(5, 3);
+function operate(operator, a, b) {
+    if (operator == "+") return add(a, b);
+    else if (operator == "-") return subtract(a, b);
+    else if (operator == "*") return multiply(a, b);
+    else if (operator == "/") return divide(a, b);
+    else return "Invalid Operator";
+}
+
+console.log(operate("+", 2, 3));
+console.log(operate("-", 2, 3));
+console.log(operate("*", 2, 3));
+console.log(operate("/", 2, 3));
