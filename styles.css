@@ -29,23 +29,13 @@ div {
     justify-content: flex-end;
 }
 
-.operation-buttons-container {
-    display: flex;
-}
-
-.number-buttons-container {
+.function-container {
     display: flex;
     flex-wrap: wrap;
 }
 
-.operator {
-    flex-grow: 1;
-    padding: 25px;
-    margin: 15px;
-}
-
-.operand {
-    width: 250px;
+.function {
+    width: 175px;
     flex-grow: 1;
     padding: 50px 15px 50px 15px;
     margin: 15px;
