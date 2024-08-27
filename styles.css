@@ -8,6 +8,10 @@ div {
     border: 1px solid black;
 }
 
+div > p {
+    padding: 50px;
+}
+
 .calculator-container {
     display: flex;
     flex-direction: column;
