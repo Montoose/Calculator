@@ -1,3 +1,9 @@
+let display = document.getElementById("display");
+let onButton = document.getElementById("on");
+let offButton = document.getElementById("off");
+
+let powerState = false;
+
 function add(a, b) {
     return a + b;
 } 
@@ -20,6 +26,27 @@ function operate(operator, a, b) {
     else if (operator == "*") return multiply(a, b);
     else if (operator == "/") return divide(a, b);
     else return "Invalid Operator";
+}
+
+onButton.addEventListener("click", () => {
+    if (powerState == false) {
+        powerState = true;
+        let output = (document.createElement("p"));
+        display.appendChild(output);
+        output.appendChild(document.createTextNode("0"));
+    }
+})
+
+offButton.addEventListener("click", () => {
+    if (powerState == true) {
+        powerState = false;
+        display.replaceChildren();
+    }
+})
+
+
+function calculateDisplay() {
+    let output = ""
 }
 
 console.log(operate("+", 2, 3));

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rad Calculator</title>
-    <script src="script.js"></script>
+    <script defer src="script.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,13 +13,13 @@
         <div class="Heading">
             <h3>Rad Calculator</h3>
         </div>
-        <div class="display">
-            <p>5 + 3 = 8</p>
+        <div id="display">
+            <p></p>
         </div>
         <div class="buttons-container">
             <div class="power-buttons-container">
-                <div class="power on">On</div>
-                <div class="power off">Off</div>
+                <div class="power" id="on">On</div>
+                <div class="power" id="off">Off</div>
                 <div class="power equal">=</div>
                 <div class="power delete">Delete</div>
             </div>
