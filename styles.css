@@ -33,7 +33,7 @@ div > p {
     justify-content: flex-end;
 }
 
-.function-container {
+#function-container {
     display: flex;
     flex-wrap: wrap;
 }

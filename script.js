@@ -1,6 +1,7 @@
 let display = document.getElementById("display");
 let onButton = document.getElementById("on");
 let offButton = document.getElementById("off");
+let functions = document.getElementById("function-container");
 
 let powerState = false;
 
@@ -44,10 +45,10 @@ offButton.addEventListener("click", () => {
     }
 })
 
+functions.addEventListener("click", function(e) {
+    console.log(e.target);
+})
 
-function calculateDisplay() {
-    let output = ""
-}
 
 console.log(operate("+", 2, 3));
 console.log(operate("-", 2, 3));
