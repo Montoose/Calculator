@@ -23,12 +23,12 @@ function operate(operator, a, b) {
 function addNumber(input) {
         if (containFirstValue == false && firstOperand.length < 7) {
             firstOperand = firstOperand + input.toString();
-            console.log(`FirstOperand is ${firstOperand}`);
+            displayMath();
         }
         else if (containFirstValue == true) {
             secondOperand = secondOperand + input.toString();
             containSecondValue = true;
-            console.log(`SecondOperand is ${secondOperand}`);
+            displayMath();
         }
 }
 
@@ -36,25 +36,26 @@ function addOperator(input) {
         if (containFirstValue == false || containSecondValue == false) {
             containFirstValue = true;
             operator = input;
-            console.log(`Operator is ${operator}`);
+            displayMath();
         }
         else if (containFirstValue == true && containSecondValue == true) {
             operator = input;
             firstOperand = operate(operator, Number(firstOperand), Number(secondOperand));
-            console.log(firstOperand);
-            operator = "";
-            containOperator = false;
             secondOperand = ""
+            displayMath();
             containSecondValue = false;
         }
+}
+
+function displayMath() {
+    let math = `${firstOperand} ${operator} ${secondOperand}`;
+    display.replaceChildren(document.createTextNode(math));
 }
 
 onButton.addEventListener("click", () => {
     if (powerState == false) {
         powerState = true;
-        let output = (document.createElement("p"));
-        display.appendChild(output);
-        output.appendChild(document.createTextNode("0"));
+        display.appendChild(document.createTextNode("0"));
     }
 })
 
@@ -62,17 +63,23 @@ offButton.addEventListener("click", () => {
     if (powerState == true) {
         powerState = false;
         display.replaceChildren();
+        firstOperand = "";
+        secondOperand = "";
+        operator = "";
+        containFirstValue = false;
+        containSecondValue = false;
+        containOperator = false;
     }
 })
 
 Array.from(operators).forEach(element => {
     element.addEventListener("click", function(e) {
-        addOperator(e.target.value);
+        if (powerState == true) addOperator(e.target.value);
     })
 })
 
 Array.from(numbers).forEach(element => {
     element.addEventListener("click", function(e) {
-        addNumber(e.target.value);
+        if (powerState == true) addNumber(e.target.value);
     })
 })
