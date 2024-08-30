@@ -1,32 +1,54 @@
 let display = document.getElementById("display");
 let onButton = document.getElementById("on");
 let offButton = document.getElementById("off");
-let functions = document.getElementById("function-container");
+let operators = document.getElementsByClassName("operator");
+let numbers = document.getElementsByClassName("number");
 
 let powerState = false;
-
-function add(a, b) {
-    return a + b;
-} 
-
-function subtract(a, b) {
-    return a - b;
-}
-
-function multiply(a, b) {
-    return a * b;
-}
-
-function divide(a, b) {
-    return a / b;
-}
+let firstOperand = "";
+let secondOperand = "";
+let operator = "";
+let containFirstValue = false;
+let containSecondValue = false;
+let containOperator = false;
 
 function operate(operator, a, b) {
-    if (operator == "+") return add(a, b);
-    else if (operator == "-") return subtract(a, b);
-    else if (operator == "*") return multiply(a, b);
-    else if (operator == "/") return divide(a, b);
+    if (operator == "+") return a + b;
+    else if (operator == "-") return a - b;
+    else if (operator == "*") return a * b;
+    else if (operator == "/") return a / b;
     else return "Invalid Operator";
+}
+
+function addNumber(input) {
+        if (containFirstValue == false && firstOperand.length < 7) {
+            firstOperand = firstOperand + input.toString();
+            console.log(`FirstOperand is ${firstOperand}`);
+        }
+        else if (containFirstValue == true) {
+            secondOperand = secondOperand + input.toString();
+            containSecondValue = true;
+            console.log(`SecondOperand is ${secondOperand}`);
+        }
+}
+
+/* First Case: If we don't have a first value or an operator, and we hit the operator button,
+then continue to change the operator. (Also leave the first operator as the default when no number inputted) */
+function addOperator(input) { 
+        if (containFirstValue == false || containSecondValue == false) {
+            containFirstValue = true;
+            operator = input;
+            console.log(`Operator is ${operator}`);
+        }
+        else if (containFirstValue == true && containSecondValue == true) {
+            operator = input;
+            firstOperand = operate(operator, Number(firstOperand), Number(secondOperand));
+            console.log(firstOperand);
+            operator = "";
+            containOperator = false;
+            secondOperand = ""
+            containSecondValue = false;
+        }
 }
 
 onButton.addEventListener("click", () => {
@@ -45,12 +67,14 @@ offButton.addEventListener("click", () => {
     }
 })
 
-functions.addEventListener("click", function(e) {
-    console.log(e.target);
+Array.from(operators).forEach(element => {
+    element.addEventListener("click", function(e) {
+        addOperator(e.target.value);
+    })
 })
 
-
-console.log(operate("+", 2, 3));
-console.log(operate("-", 2, 3));
-console.log(operate("*", 2, 3));
-console.log(operate("/", 2, 3));
+Array.from(numbers).forEach(element => {
+    element.addEventListener("click", function(e) {
+        addNumber(e.target.value);
+    })
+})
