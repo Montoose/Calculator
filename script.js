@@ -3,6 +3,7 @@ let onButton = document.getElementById("on");
 let offButton = document.getElementById("off");
 let operators = document.getElementsByClassName("operator");
 let numbers = document.getElementsByClassName("number");
+let equalButton = document.getElementById("equal");
 
 let powerState = false;
 let firstOperand = "";
@@ -36,6 +37,7 @@ function addOperator(input) {
         if (containFirstValue == false || containSecondValue == false) {
             containFirstValue = true;
             operator = input;
+            containOperator = true;
             displayMath();
         }
         else if (containFirstValue == true && containSecondValue == true) {
@@ -45,6 +47,15 @@ function addOperator(input) {
             displayMath();
             containSecondValue = false;
         }
+}
+
+function equalCalculate() {
+    if (containFirstValue == true && containSecondValue == true && containOperator == true) {
+        firstOperand = operate(operator, Number(firstOperand), Number(secondOperand));
+        secondOperand = ""
+        displayMath();
+        containSecondValue = false;
+    }
 }
 
 function displayMath() {
@@ -82,4 +93,8 @@ Array.from(numbers).forEach(element => {
     element.addEventListener("click", function(e) {
         if (powerState == true) addNumber(e.target.value);
     })
+})
+
+equalButton.addEventListener("click", () => {
+    equalCalculate();
 })
