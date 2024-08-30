@@ -32,8 +32,6 @@ function addNumber(input) {
         }
 }
 
-/* First Case: If we don't have a first value or an operator, and we hit the operator button,
-then continue to change the operator. (Also leave the first operator as the default when no number inputted) */
 function addOperator(input) { 
         if (containFirstValue == false || containSecondValue == false) {
             containFirstValue = true;
