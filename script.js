@@ -4,6 +4,7 @@ let offButton = document.getElementById("off");
 let operators = document.getElementsByClassName("operator");
 let numbers = document.getElementsByClassName("number");
 let equalButton = document.getElementById("equal");
+let clearButton = document.getElementById("clear");
 
 let powerState = false;
 let firstOperand = "";
@@ -23,6 +24,7 @@ function operate(operator, a, b) {
 
 function addNumber(input) {
         if (containFirstValue == false && firstOperand.length < 7) {
+            if (firstOperand == "0") firstOperand = "";
             firstOperand = firstOperand + input.toString();
             displayMath();
         }
@@ -34,7 +36,9 @@ function addNumber(input) {
 }
 
 function addOperator(input) { 
+
         if (containFirstValue == false || containSecondValue == false) {
+            if (firstOperand == "") firstOperand = "0";
             containFirstValue = true;
             operator = input;
             containOperator = true;
@@ -63,24 +67,34 @@ function displayMath() {
     display.replaceChildren(document.createTextNode(math));
 }
 
+function resetCalculator() {
+    display.replaceChildren();
+    firstOperand = "";
+    secondOperand = "";
+    operator = "";
+    containFirstValue = false;
+    containSecondValue = false;
+    containOperator = false;
+}
+
 onButton.addEventListener("click", () => {
     if (powerState == false) {
         powerState = true;
-        display.appendChild(document.createTextNode("0"));
+        display.appendChild(document.createTextNode("Try Me."));
     }
 })
 
 offButton.addEventListener("click", () => {
     if (powerState == true) {
         powerState = false;
-        display.replaceChildren();
-        firstOperand = "";
-        secondOperand = "";
-        operator = "";
-        containFirstValue = false;
-        containSecondValue = false;
-        containOperator = false;
+        resetCalculator();
     }
+})
+
+clearButton.addEventListener("click", () => {
+    resetCalculator();
+    firstOperand = "0";
+    display.appendChild(document.createTextNode(`${firstOperand}`));
 })
 
 Array.from(operators).forEach(element => {
