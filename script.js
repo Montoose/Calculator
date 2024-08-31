@@ -1,4 +1,5 @@
-let display = document.getElementById("display");
+let calcDisplay = document.getElementById("display-calculation");
+let numberDisplay = document.getElementById("display-current-number");
 let onButton = document.getElementById("on");
 let offButton = document.getElementById("off");
 let operators = document.getElementsByClassName("operator");
@@ -7,6 +8,7 @@ let equalButton = document.getElementById("equal");
 let clearButton = document.getElementById("clear");
 
 let powerState = false;
+let currentNumber = "";
 let firstOperand = "";
 let secondOperand = "";
 let operator = "";
@@ -17,59 +19,82 @@ let containOperator = false;
 function operate(operator, a, b) {
     if (operator == "+") return a + b;
     else if (operator == "-") return a - b;
-    else if (operator == "*") return a * b;
+    else if (operator == "x") return a * b;
     else if (operator == "/") return a / b;
     else return "Invalid Operator";
 }
 
 function addNumber(input) {
-        if (containFirstValue == false && firstOperand.length < 7) {
-            if (firstOperand == "0") firstOperand = "";
-            firstOperand = firstOperand + input.toString();
-            displayMath();
-        }
-        else if (containFirstValue == true) {
-            secondOperand = secondOperand + input.toString();
-            containSecondValue = true;
-            displayMath();
-        }
+    if (currentNumber.length < 15) {
+        if (containFirstValue == true) displayOperatorOperand();
+        currentNumber = currentNumber + input.toString();
+        displayCurrentNumber();
+    }
 }
 
 function addOperator(input) { 
+    
+    if (containFirstValue == false) {
+        if (currentNumber == "") firstOperand = "0";
+        else firstOperand = currentNumber;
+        operator = input;
+        
+        containFirstValue = true;
+        containOperator = true;
+        
+        displayOperatorOperand();
+        currentNumber = "";
+    }
 
-        if (containFirstValue == false || containSecondValue == false) {
-            if (firstOperand == "") firstOperand = "0";
-            containFirstValue = true;
-            operator = input;
-            containOperator = true;
-            displayMath();
-        }
-        else if (containFirstValue == true && containSecondValue == true) {
-            operator = input;
-            firstOperand = operate(operator, Number(firstOperand), Number(secondOperand));
-            secondOperand = ""
-            displayMath();
-            containSecondValue = false;
-        }
-}
+    else if (containFirstValue == true && currentNumber == "") {
+        operator = input;
+        numberDisplay.replaceChildren(document.createTextNode(currentNumber));
+        displayOperatorOperand();
+    }
 
-function equalCalculate() {
-    if (containFirstValue == true && containSecondValue == true && containOperator == true) {
-        firstOperand = operate(operator, Number(firstOperand), Number(secondOperand));
-        secondOperand = ""
-        displayMath();
+    else if (containFirstValue == true && currentNumber.length > 0) {
+        secondOperand = currentNumber;
+        operator = input;
+
+        currentNumber = operate(operator, Number(firstOperand), Number(secondOperand));
+
+        displayResult();
+        displayCurrentNumber();
+        
+        firstOperand = currentNumber;
+        currentNumber = "";
+        secondOperand = "";
         containSecondValue = false;
     }
 }
 
-function displayMath() {
-    let math = `${firstOperand} ${operator} ${secondOperand}`;
-    display.replaceChildren(document.createTextNode(math));
+function equalCalculate() {
+    if (containFirstValue == true && containSecondValue == true && containOperator == true) {
+        currentNumber = operate(operator, Number(currentNumber), Number(secondOperand));
+        secondOperand = "";
+        displayResult();
+        containSecondValue = false;
+    }
+}
+
+function displayCurrentNumber() {
+    numberDisplay.replaceChildren(document.createTextNode(currentNumber));
+}
+
+function displayOperatorOperand() {
+    let math = `${firstOperand} ${operator}`;
+    calcDisplay.replaceChildren(document.createTextNode(math));
+}
+
+function displayResult() {
+    let math = `${firstOperand} ${operator} ${secondOperand} = `;
+    calcDisplay.replaceChildren(document.createTextNode(math));
 }
 
 function resetCalculator() {
-    display.replaceChildren();
-    firstOperand = "";
+    numberDisplay.replaceChildren();
+    calcDisplay.replaceChildren();
+    currentNumber = "0";
     secondOperand = "";
     operator = "";
     containFirstValue = false;
@@ -80,7 +105,7 @@ function resetCalculator() {
 onButton.addEventListener("click", () => {
     if (powerState == false) {
         powerState = true;
-        display.appendChild(document.createTextNode("Try Me."));
+        numberDisplay.appendChild(document.createTextNode("Try Me."));
     }
 })
 
@@ -93,8 +118,7 @@ offButton.addEventListener("click", () => {
 
 clearButton.addEventListener("click", () => {
     resetCalculator();
-    firstOperand = "0";
-    display.appendChild(document.createTextNode(`${firstOperand}`));
+    numberDisplay.appendChild(document.createTextNode(`${currentNumber}`));
 })
 
 Array.from(operators).forEach(element => {
