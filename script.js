@@ -6,6 +6,7 @@ let operators = document.getElementsByClassName("operator");
 let numbers = document.getElementsByClassName("number");
 let equalButton = document.getElementById("equal");
 let clearButton = document.getElementById("clear");
+let backspaceButton = document.getElementById("backspace");
 
 let powerState = false;
 let currentNumber = "";
@@ -13,7 +14,6 @@ let firstOperand = "";
 let secondOperand = "";
 let operator = "";
 let containFirstValue = false;
-let containSecondValue = false;
 let containOperator = false;
 
 function operate(operator, a, b) {
@@ -24,10 +24,17 @@ function operate(operator, a, b) {
     else return "Invalid Operator";
 }
 
-function addNumber(input) {
+function addCurrentNumber(input) {
     if (currentNumber.length < 15) {
         if (containFirstValue == true) displayOperatorOperand();
         currentNumber = currentNumber + input.toString();
+        displayCurrentNumber();
+    }
+}
+
+function editCurrentNumber(input) {
+    if(currentNumber != "") {
+        currentNumber = currentNumber.slice(0, -1);
         displayCurrentNumber();
     }
 }
@@ -64,16 +71,20 @@ function addOperator(input) {
         firstOperand = currentNumber;
         currentNumber = "";
         secondOperand = "";
-        containSecondValue = false;
     }
 }
 
 function equalCalculate() {
-    if (containFirstValue == true && containSecondValue == true && containOperator == true) {
-        currentNumber = operate(operator, Number(currentNumber), Number(secondOperand));
-        secondOperand = "";
+    if (containFirstValue == true && currentNumber.length > 0 && containOperator == true) {
+        secondOperand = currentNumber;
+        currentNumber = operate(operator, Number(firstOperand), Number(secondOperand));
+        
         displayResult();
-        containSecondValue = false;
+        displayCurrentNumber();
+        
+        firstOperand = currentNumber;
+        secondOperand = "";
+        currentNumber = "";
     }
 }
 
@@ -94,11 +105,10 @@ function displayResult() {
 function resetCalculator() {
     numberDisplay.replaceChildren();
     calcDisplay.replaceChildren();
-    currentNumber = "0";
+    currentNumber = "";
     secondOperand = "";
     operator = "";
     containFirstValue = false;
-    containSecondValue = false;
     containOperator = false;
 }
 
@@ -129,10 +139,14 @@ Array.from(operators).forEach(element => {
 
 Array.from(numbers).forEach(element => {
     element.addEventListener("click", function(e) {
-        if (powerState == true) addNumber(e.target.value);
+        if (powerState == true) addCurrentNumber(e.target.value);
     })
 })
 
 equalButton.addEventListener("click", () => {
     equalCalculate();
+})
+
+backspaceButton.addEventListener("click", () => {
+    editCurrentNumber();
 })
