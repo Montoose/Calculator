@@ -2,8 +2,8 @@ let calcDisplay = document.getElementById("display-calculation");
 let numberDisplay = document.getElementById("display-current-number");
 let onButton = document.getElementById("on");
 let offButton = document.getElementById("off");
-let operators = document.getElementsByClassName("operator");
-let numbers = document.getElementsByClassName("number");
+let operatorButton = document.getElementsByClassName("operator");
+let numberButton = document.getElementsByClassName("number");
 let equalButton = document.getElementById("equal");
 let clearButton = document.getElementById("clear");
 let backspaceButton = document.getElementById("backspace");
@@ -17,11 +17,15 @@ let containFirstValue = false;
 let containOperator = false;
 
 function operate(operator, a, b) {
-    if (operator == "+") return a + b;
-    else if (operator == "-") return a - b;
-    else if (operator == "x") return a * b;
-    else if (operator == "/") return a / b;
+    let operation;
+    
+    if (operator == "+") operation = a + b;
+    else if (operator == "-") operation = a - b;
+    else if (operator == "x") operation = a * b;
+    else if (operator == "/") operation = a / b;
     else return "Invalid Operator";
+
+    return operation.toFixed(6);
 }
 
 function addCurrentNumber(input) {
@@ -131,13 +135,13 @@ clearButton.addEventListener("click", () => {
     numberDisplay.appendChild(document.createTextNode(`${currentNumber}`));
 })
 
-Array.from(operators).forEach(element => {
+Array.from(operatorButton).forEach(element => {
     element.addEventListener("click", function(e) {
         if (powerState == true) addOperator(e.target.value);
     })
 })
 
-Array.from(numbers).forEach(element => {
+Array.from(numberButton).forEach(element => {
     element.addEventListener("click", function(e) {
         if (powerState == true) addCurrentNumber(e.target.value);
     })
